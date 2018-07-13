@@ -26,20 +26,26 @@ public class MainActivity extends AppCompatActivity {
 
         checkNetworkStatus();
         getMessage();
-        // ATTENTION: This was auto-generated to handle app links.
-        Intent appLinkIntent = getIntent();
-        String appLinkAction = appLinkIntent.getAction();
-        Uri appLinkData = appLinkIntent.getData();
+        init();
     }
 
-    public void skip(View view) {
+    private MyDymReceiver dymReceiver = new MyDymReceiver();
+    private void init() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("aaaaa");
+        registerReceiver(dymReceiver, filter);
+    }
+    public void msg(View view) {
         int id = view.getId();
         switch (id) {
             case R.id.button3:
-                startActivity(new Intent(this, Main2Activity.class));
+                Intent intentFileter = new Intent("com.ybs.send.demo_ybs_broadcastreceiver");
+                intentFileter.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+                sendBroadcast(intentFileter);
                 break;
-            case R.id.button6:
-                startActivity(new Intent(this, NotificationBroadCastActivity.class));
+            case R.id.button2:
+                Intent intent2 = new Intent("aaaaa");
+                sendBroadcast(intent2);
                 break;
         }
     }
@@ -72,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         unregisterReceiver(networkConnectChangedReceiver);
         unregisterReceiver(testReceiver);
+        unregisterReceiver(dymReceiver);
         super.onDestroy();
     }
 }
